@@ -11,6 +11,7 @@ public class UnitMovement : MonoBehaviour
 
     private void Start()
     {
+        
         cam = Camera.main;
         agent = GetComponent<NavMeshAgent>();
     }
