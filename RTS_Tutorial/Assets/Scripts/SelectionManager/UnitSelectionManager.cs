@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UnitSelectionManager : MonoBehaviour
@@ -83,23 +84,22 @@ public class UnitSelectionManager : MonoBehaviour
         if (!unitSelected.Contains(unit))
         {
             unitSelected.Add(unit);
-            TriggerSelectionIndicator(unit, true);
-            EnableUnitMovement(unit, true);
+            SelectUnit(unit, true);
         }
         else
         {
-            EnableUnitMovement(unit, false);
-            TriggerSelectionIndicator(unit, false);
+            SelectUnit(unit, false);
             unitSelected.Remove(unit);
         }
     }
 
-    private void DeselectAll()
+
+
+    public void DeselectAll()
     {
         foreach (var unit in unitSelected)
         {
-            EnableUnitMovement(unit, false);
-            TriggerSelectionIndicator(unit, false);
+            SelectUnit(unit, false);
         }
         groundMarker.SetActive(false);
         unitSelected.Clear();
@@ -110,8 +110,7 @@ public class UnitSelectionManager : MonoBehaviour
         DeselectAll();
 
         unitSelected.Add(unit);
-        TriggerSelectionIndicator(unit, true);
-        EnableUnitMovement(unit, true);
+        SelectUnit(unit, true);
     }
 
     private void EnableUnitMovement(GameObject unit, bool shouldMove)
@@ -123,4 +122,18 @@ public class UnitSelectionManager : MonoBehaviour
         unit.transform.GetChild(0).gameObject.SetActive(isVisible);
     }
 
+    internal void DragSelect(GameObject unit)
+    {
+        if (!unitSelected.Contains(unit))
+        {
+            unitSelected.Add(unit);
+            SelectUnit(unit, true);
+        }
+
+    }
+    private void SelectUnit(GameObject unit, bool IsSelected)
+    {
+        TriggerSelectionIndicator(unit, IsSelected);
+        EnableUnitMovement(unit, IsSelected);
+    }
 }
